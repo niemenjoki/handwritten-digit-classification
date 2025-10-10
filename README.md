@@ -1,66 +1,95 @@
-# Computer-Vision-Project
+# handwritten-digit-classification: A computer vision project
 
-The purpose of this project was mostly to help me learn programming.
+This project was originally created to help me learn programming and the fundamentals of neural networks.
 
-However, I encourage anyone to contribute to this project! See [CONTRIBUTING](CONTRIBUTING.md)
+It includes code for a web app that **uses** a handwritten digit recognition model.  
+The app is **no longer live**, but the source code remains available in this repository.  
+
+A separate data collection app once existed to gather handwritten digits from users â€” that app has been **discontinued**.  
+However, the **dataset** it produced is still available for anyone to download and experiment with.
+
+---
 
 ## Dataset
 
-To create the dataset, I coded and published [a public web app](https://jnsjknn.github.io/handwritten-digit-classification/datageneration), where anybody can draw digits. The app posts the pixel data and the label to a [Google Cloud Firestore database](https://firebase.google.com/products/firestore/) I set up.
+The dataset was built from user-submitted drawings collected through the original web app.  
+Each submission was stored in a [Google Cloud Firestore database](https://firebase.google.com/products/firestore/), then compiled into a single JSON file.
 
-**The web app is still online and submitted digits are still occasionally being added to the dataset.**
+Each sample in the dataset contains:
 
-The dataset has examples of handwritten digits. The data is in a JSON format. The file contains an array of objects, where each object has two fields:
+* `image:` a 784-element array of numbers `[0â€“255]`, representing pixel values for a 28Ã—28 image  
+  (`255` = white, `0` = black)
+* `label:` the numeric digit corresponding to the image
 
-* `image:` a 784-element array of numbers [0,255], representing pixel values for each 28x28 handwritten image. `255` means white and `0` means black.
-* `label:`: the label for this character
+### Dataset snapshot (as of 28 November, 2019):
 
-### The current amount of digits in the dataset (28 November, 2019):
-
-<table>
-<tr><td><b>All</b></td><td>0</td><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td>6</td><td>7</td><td>8</td><td>9</td></tr><tr>
-<td><b>13942</b></td>
-<td>1284</td>
-<td>1441</td>
-<td>1439</td>
-<td>1376</td>
-<td>1431</td>
-<td>1357</td>
-<td>1374</td>
-<td>1465</td>
-<td>1328</td>
-<td>1447</td>
-</tr></table>
+| All | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 |
+|-----|---|---|---|---|---|---|---|---|---|---|
+| **13942** | 1284 | 1441 | 1439 | 1376 | 1431 | 1357 | 1374 | 1465 | 1328 | 1447 |
 
 ![Picture of the dataset](assets/dataset.png)
 
-### Using the dataset
+### Download the dataset
 
-Anyone is free to do anything they want with the dataset. You can either download it or use it with AJAX. An attribution is appreciated but not required.
+You can download the dataset directly from this repository:
 
-##### Download
+ðŸ‘‰ [Download dataset.json](data/dataset.json)
 
-You can download the data [here](data/dataset.json)
-
-##### AJAX
+Or load it dynamically with JavaScript:
 
 ```javascript
 let data;
 (async () => {
-  const URL = 'https://raw.githubusercontent.com/jnsjknn/handwritten-digit-classification/master/data/dataset.json'
-  data = await fetch(URL).then(res=>res.json());
-})()
-// data becomes: Array(13942) [{...}, {...}, ..., {...}]
+  const URL = 'https://raw.githubusercontent.com/jnsjknn/handwritten-digit-classification/master/data/dataset.json';
+  data = await fetch(URL).then(res => res.json());
+})();
+// data becomes: Array(13942) [{ image: [...], label: ... }, ...]
 ```
 
-## The neural network
+Use of the dataset is completely open â€” attribution is appreciated but not required.
 
-For now, the neural network is an almost exact copy of the Coding Train's [Toy Neural Network](https://github.com/CodingTrain/Toy-Neural-Network-JS) which uses stochastic gradient descent backpropagation. The neural network uses non-optimized functions which causes a lot of performance issues. Eventually, I may try switching to TensorFlow.js.
+---
 
-The neural network that is currently being used in the main app was trained with 60 epochs, each having 12547 digits from the dataset. Each digit was fed forward individually and the weights and biases were adjusted each time. Learning rate started at 0.01 and was divided by 2 every 5 epochs. Testing with the rest of the dataset (1392 digits), the network correctly predicted 77% of the labels.
+## Web App
+
+The code for the digit recognition web app is included in this repository.  
+It demonstrates how the trained neural network can be used to predict digits drawn by a user on a canvas element.
+
+Although the app is **not hosted anywhere**, it can still be run locally by cloning the repository.
+
+---
+
+## Neural Network
+
+The neural network implemented here is based on [Daniel Shiffman's Toy Neural Network](https://github.com/CodingTrain/Toy-Neural-Network-JS).  
+It uses stochastic gradient descent backpropagation and simple mathematical functions (not optimized for performance).
+
+### Training summary
+
+* Epochs: 60  
+* Samples per epoch: 12 547  
+* Learning rate: started at 0.01, halved every 5 epochs  
+* Test set: 1 392 digits  
+* Accuracy: **77 %**
+
+Future work (if resumed) could include converting the model to TensorFlow.js for performance and usability improvements.
+
+---
+
+## Project status
+
+- Dataset still available  
+- Web app code included in repo  
+- Web app not currently live  
+- Data collection app discontinued  
+
+This repository remains archived as a **learning resource** and **dataset source**.
+
+---
 
 ## Credits
 
-This project was immensely inspired by [Daniel Shiffman](https://github.com/CodingTrain) and particularily, his [Neural Networks Playlist on Youtube](https://www.youtube.com/playlist?list=PLRqwX-V7Uu6aCibgK1PTWWu9by6XFdCfh) on which my implementation is largely based on.
+This project was inspired by:
 
-Thank you also to 3Blue1Brown for his [Youtube playlist](https://www.youtube.com/playlist?list=PLZHQObOWTQDNU6R1_67000Dx_ZCJB-3pi) which greatly helped me understand neural networks.
+- [Daniel Shiffman](https://github.com/CodingTrain) *Neural Networks Playlist*  
+- [3Blue1Brown](https://www.youtube.com/playlist?list=PLZHQObOWTQDNU6R1_67000Dx_ZCJB-3pi) *Neural Networks Explained*
