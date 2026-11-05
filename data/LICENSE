@@ -1,0 +1,6 @@
+The dataset in this folder (dataset.json and numbers/) is dedicated to the public
+domain under the Creative Commons CC0 1.0 Universal Public Domain Dedication:
+https://creativecommons.org/publicdomain/zero/1.0/
+
+The trained networks (NN.json and NN2.json) are part of the code and licensed
+under the MIT License in the repository root.

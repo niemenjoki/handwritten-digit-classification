@@ -39,13 +39,6 @@ p {
   border: 1px solid black;
 }
 
-#portrait {
-  width: 100px;
-  border-radius: 50%;
-  border: 1px solid black;
-  margin-top: 50px;
-}
-
 #numberGuesser {
   text-align: center;
   padding: 0;
@@ -131,11 +124,6 @@ button:active {
   opacity: 0.4;
 }
 
-.social > button {
-  min-width: 140px;
-  font-size: 16px;
-}
-
 #infoOverlay p > a {
   color: black;
 }
@@ -161,21 +149,3 @@ button:focus {
   outline: 0;
 }
 
-@media screen and (max-width: 1000px) {
-  #ad-elm {
-    display: none;
-  }
-}
-@media screen and (min-width: 1001px) {
-  #ad-elm {
-    display: block;
-  }
-}
-#ad-elm {
-  position: fixed;
-  right: 20px;
-  top: 20px;
-  bottom: 20px;
-  max-width: 200px;
-  width: 200px;
-}

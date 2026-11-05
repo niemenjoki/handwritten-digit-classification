@@ -9,32 +9,14 @@
   <meta name="description" content="A simple web app using a neural network to classify digits drawn by the user.">
 
   <meta property="og:title" content="Handwritten digit classification app" />
-  <meta property="og:url" content="https://jnsjknn.github.io/handwritten-digit-classification/datageneration/" />
+  <meta property="og:url" content="https://niemenjoki.github.io/handwritten-digit-classification/" />
   <meta property="og:description" content="A simple web app using a neural network to classify digits drawn by the user" />
-  <meta property="og:image" content="dataset.png" />
+  <meta property="og:image" content="https://niemenjoki.github.io/handwritten-digit-classification/assets/dataset.png" />
 
   <meta name="twitter:title" content="Handwritten digit classification app">
-  <meta name="twitter:description" content="Help me collect a dataset of digits for a computer vision project.">
-  <meta name="twitter:image" content="dataset.png">
+  <meta name="twitter:description" content="A simple web app using a neural network to classify digits drawn by the user.">
+  <meta name="twitter:image" content="https://niemenjoki.github.io/handwritten-digit-classification/assets/dataset.png">
   <meta name="twitter:card" content="summary_large_image">
-
-  <link rel="apple-touch-icon" sizes="57x57" href="/assets/favicon/apple-icon-57x57.png">
-  <link rel="apple-touch-icon" sizes="60x60" href="/assets/favicon/apple-icon-60x60.png">
-  <link rel="apple-touch-icon" sizes="72x72" href="/assets/favicon/apple-icon-72x72.png">
-  <link rel="apple-touch-icon" sizes="76x76" href="/assets/favicon/apple-icon-76x76.png">
-  <link rel="apple-touch-icon" sizes="114x114" href="/assets/favicon/apple-icon-114x114.png">
-  <link rel="apple-touch-icon" sizes="120x120" href="/assets/favicon/apple-icon-120x120.png">
-  <link rel="apple-touch-icon" sizes="144x144" href="/assets/favicon/apple-icon-144x144.png">
-  <link rel="apple-touch-icon" sizes="152x152" href="/assets/favicon/apple-icon-152x152.png">
-  <link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon/apple-icon-180x180.png">
-  <link rel="icon" type="image/png" sizes="192x192" href="/assets/favicon/android-icon-192x192.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon/favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="96x96" href="/assets/favicon/favicon-96x96.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon/favicon-16x16.png">
-  <link rel="manifest" href="/assets/favicon/manifest.json">
-  <meta name="msapplication-TileColor" content="#ffffff">
-  <meta name="msapplication-TileImage" content="/assets/favicon/ms-icon-144x144.png">
-  <meta name="theme-color" content="#ffffff">
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.9.0/p5.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css">
@@ -45,16 +27,6 @@
   <script src="index.js"></script>
   <script src="UI.js"></script>
 
-  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-142172758-1"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-
-    function gtag() {
-      dataLayer.push(arguments);
-    }
-    gtag('js', new Date());
-    gtag('config', 'UA-142172758-1');
-  </script>
 </head>
 
 <body>
@@ -68,23 +40,16 @@
     </div>
     <div id="infoOverlay">
       <p>
-        This app uses a pure JavaScript neural network to recognize
-        hand written digits. To train the neural network I collected
-        a dataset of roughly 14000 handwritten digits. The digits were
-        draw by more than 200 volunteers.
+        An old learning project from 2019. The neural network is written
+        in plain JavaScript and was trained on about 14 000 handwritten
+        digits drawn by more than 200 volunteers.
       </p>
-      <p>You can still
-        <a href="https://jnsjknn.github.io/handwritten-digit-classification/datageneration/" target="_blank" class="hoverEffect">help me make the dataset larger</a>.
-        For more information about the project, take a look at
-        <a href="https://github.com/jnsjknn/handwritten-digit-classification" target="_blank" class="hoverEffect">the project repository on Github</a>.
+      <p>
+        The code and the dataset are on
+        <a href="https://github.com/niemenjoki/handwritten-digit-classification" target="_blank" rel="noopener" class="hoverEffect">GitHub</a>.
+        More about me:
+        <a href="https://www.niemenjoki.fi/?utm_source=github&amp;utm_medium=demo&amp;utm_content=info" target="_blank" rel="noopener" class="hoverEffect">niemenjoki.fi</a>.
       </p>
-      <img id="portrait" src="assets/joonasjokinen.png" alt="Image of Joonas Jokinen">
-      <div id="socialWrapper">
-        <a class="social hoverEffect" href="https://joonasjokinen.fi" target="_blank"><button><i class="fa fa-globe" onclick=""></i> Website</button></a>
-        <a class="social hoverEffect" href="https://github.com/jnsjknn" target="_blank"><button><i class="fab fa-github" onclick=""></i> Github</button></a>
-        <a class="social hoverEffect" href="https://www.linkedin.com/in/joonasjokinen" target="_blank"><button><i class="fab fa-linkedin" onclick=""></i> LinkedIn</button></a>
-        <a class="social hoverEffect" href="https://www.instagram.com/jnsjknn" target="_blank"><button><i class="fab fa-instagram" onclick=""></i> Instagram</button></a>
-      </div>
     </div>
     <i class="icon fa fa-question-circle helpButton hoverEffect" onclick="toggleHelp()"></i>
     <i class="icon fa fa-info-circle infoButton hoverEffect" onclick="toggleInfo()"></i>
