@@ -1,12 +1,68 @@
 # Handwritten digit classification
 
-> **An old learning project from 2019.** It is no longer developed, but the demo still works and the dataset is free to use.
+> **An old learning project from 2019, with one last update in 2026.** It is no longer developed, but the demo still works
+> and the dataset is free to use.
 
 A neural network written in plain JavaScript that recognizes digits you draw. I built it in 2019 to learn programming and
 the basics of neural networks. More than 200 volunteers drew about 14 000 digits for the training data.
 
 **[Try the demo](https://niemenjoki.github.io/handwritten-digit-classification/)**: draw a digit with your mouse or finger,
-and the bars show how confident the network is about each digit.
+and the bars show how confident the network is about each digit. The menu under the canvas switches between the 2019
+network, the same network with its bugs fixed, and a TensorFlow.js comparison model.
+
+## 2026 update
+
+Before archiving the project I went back to it with seven more years of experience. The goal was to keep the original
+code and find out how good it could have been, not to rewrite it.
+
+| Model | Test accuracy | Training time |
+|---|---|---|
+| 2019 network, original code | 89.0 % | 29 min |
+| 2019 network, bugs fixed | 96.0 % | 29 min |
+| 2019 network, bugs fixed, cleaned dataset | 96.9 % | 21 min |
+| TensorFlow.js convolutional network, cleaned dataset | 98.8 % | 2 min |
+
+All models were trained with the same settings as in 2019 (20 epochs) and measured on the same fixed test set of 1 395
+digits. With the cleaned dataset the test set has 1 371 digits, because the faulty ones were removed from it too. On the
+uncleaned test set the last two models reach 96.1 % and 98.1 %. Training ran on a 6-core desktop CPU.
+
+**What was fixed** ([lib/neuralnetwork2026.js](lib/neuralnetwork2026.js); the original
+[lib/neuralnetwork.js](lib/neuralnetwork.js) is unchanged):
+
+1. **Weight initialisation.** Weights started at random values between -1 and 1. With 784 inputs, the hidden neurons
+   were pushed to 0 or 1 right away and learned very slowly. Now they start small (Xavier initialisation).
+2. **Inverted inputs.** The white background was 1 and the ink 0, so almost every input was "on" and the digit itself
+   was the missing part. Now ink is 1.
+3. **Output gradient.** The output uses softmax, but the gradient was multiplied by the derivative of the sigmoid. With
+   softmax and cross-entropy the correct gradient is simply target minus output.
+4. **Backpropagation order.** The errors of the hidden layers were calculated after the output weights had already been
+   updated. Now all errors are calculated first, with the weights of the forward pass.
+5. **Softmax overflow.** Softmax now subtracts the largest value before `Math.exp`.
+
+The first fix alone made the biggest difference: after one epoch the fixed network is at 90 % and the original at 79 %.
+
+**Fixed test set.** In 2019 the test set was drawn at random on every run, so the results could not be compared.
+Now the test set is fixed ([data/split.json](data/split.json)), and identical images are always on the same side of
+the split.
+
+**Cleaned dataset.** A TensorFlow.js model was trained five times so that each image was predicted by a model that had
+never seen it. I looked at the 176 images where the model confidently disagreed with the label, and removed only the
+clear cases. Unclear handwriting stays in the dataset, because it is part of real handwriting. 313 images were removed
+([data/removed.json](data/removed.json) lists each one with the reason):
+
+| Reason | Images |
+|---|---|
+| Duplicate of another image | 190 |
+| Wrong label (for example a clear 7 labelled as 1) | 82 |
+| Not a recognizable digit (faces, scribbles, words) | 31 |
+| Several digits in one image | 7 |
+| Roman numeral | 3 |
+
+The original [data/dataset.json](data/dataset.json) is unchanged.
+
+**About the 77 % in the 2019 README.** The 2019 README reported 77 % after 60 epochs. The network the demo has always used
+(`data/NN2.json`) was, according to its own metadata, trained for 20 epochs, and the original code trained again today
+reaches 89 %. The 77 % was most likely from an earlier run.
 
 ## Dataset
 
@@ -34,6 +90,9 @@ const data = await fetch(URL).then((res) => res.json());
 
 The same digits are also split by label in `data/numbers/0.json` to `data/numbers/9.json`.
 
+To use the cleaned version, leave out the images listed in [data/removed.json](data/removed.json) (indices of
+`dataset.json`), or run `node training/clean.js build` to write `data/dataset-clean.json`.
+
 The dataset is dedicated to the public domain under [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/): use it
 for anything, no attribution needed.
 
@@ -41,10 +100,11 @@ for anything, no attribution needed.
 
 - The network is based on Daniel Shiffman's [Toy Neural Network](https://github.com/CodingTrain/Toy-Neural-Network-JS).
 - Layers: 784 inputs, two hidden layers of 300 and 60 neurons, and 10 outputs.
-- Training: stochastic gradient descent with backpropagation, 60 epochs of 12 547 samples. The learning rate started at
-  0.01 and was halved every 5 epochs.
-- Accuracy on a test set of 1 392 digits: **77 %**.
-- The only library is [p5.js](https://p5js.org/) for drawing on the canvas.
+- Training: stochastic gradient descent with backpropagation, one sample at a time, 20 epochs of 12 547 samples. The
+  learning rate started at 0.01 (0.05 in the fixed network) and was halved every 5 epochs.
+- Before training and prediction, each drawing is centered, cropped and scaled to 28 x 28 pixels (`lib/helper.js`).
+- The only library is [p5.js](https://p5js.org/) for drawing on the canvas. The TensorFlow.js comparison model loads
+  TensorFlow.js only when you select it.
 
 ## Running it locally
 
@@ -54,19 +114,36 @@ The demo is static HTML and JavaScript, but it loads the trained network with `f
 npx serve .
 ```
 
-Then open the address it prints. The training code is in `learning/`. It has no user interface: run it from the browser
-console.
+Then open the address it prints.
+
+The 2026 training scripts run on Node.js 18 or newer. The plain JavaScript network needs no packages. The TensorFlow.js
+scripts need `@tensorflow/tfjs-node`:
+
+```bash
+cd training && npm install && cd ..
+node training/train-mlp.js 2019            # the original code
+node training/train-mlp.js 2026 --clean    # the fixed network on the cleaned dataset
+node training/train-cnn.js --clean         # the TensorFlow.js model
+node training/evaluate.js                  # the saved networks on the fixed test set
+```
+
+The original 2019 training code is in `learning/`. It has no user interface: run it from the browser console.
 
 ## Contents
 
 | Path | Contents |
 |---|---|
 | `index.html`, `index.js`, `UI.js`, `style.css` | the demo |
-| `lib/` | the neural network and matrix code |
-| `learning/` | training code |
+| `lib/` | the neural network and matrix code (`neuralnetwork2026.js` is the fixed network) |
+| `learning/` | the original 2019 training code (browser console) |
+| `training/` | the 2026 training, cleaning and evaluation scripts (Node.js) |
 | `data/dataset.json` | the dataset |
 | `data/numbers/` | the dataset split by digit |
-| `data/NN2.json` | the trained network used by the demo |
+| `data/removed.json` | the images left out of the cleaned dataset, with reasons |
+| `data/split.json` | the fixed test set |
+| `data/NN2.json` | the 2019 network |
+| `data/NN2026.json` | the fixed network, trained on the cleaned dataset |
+| `data/tfjs-model/` | the TensorFlow.js comparison model |
 | `data/NN.json` | an earlier, smaller network |
 
 ## License

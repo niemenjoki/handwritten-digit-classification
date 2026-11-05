@@ -24,6 +24,7 @@
   <script src="lib/helper.js"></script>
   <script src="lib/matrix.js"></script>
   <script src="lib/neuralnetwork.js"></script>
+  <script src="lib/neuralnetwork2026.js"></script>
   <script src="index.js"></script>
   <script src="UI.js"></script>
 
@@ -45,6 +46,11 @@
         digits drawn by more than 200 volunteers.
       </p>
       <p>
+        In 2026 the bugs in the network were fixed and the dataset was
+        cleaned. The menu under the canvas switches between the 2019
+        network, the fixed one and a TensorFlow.js comparison model.
+      </p>
+      <p>
         The code and the dataset are on
         <a href="https://github.com/niemenjoki/handwritten-digit-classification" target="_blank" rel="noopener" class="hoverEffect">GitHub</a>.
         More about me:
@@ -59,6 +65,11 @@
       <i class="fa fa-eraser" style="opacity: 0.5"></i>
     </button>
     <button id="clearCanvas" class="hoverEffect" onclick="clearCanvas()">Clear canvas</button><br>
+    <select id="modelSelect" onchange="selectModel(this.value)" aria-label="Neural network">
+      <option value="2026" selected>2019 network, bugs fixed in 2026</option>
+      <option value="2019">2019 network, original</option>
+      <option value="tfjs">TensorFlow.js CNN (comparison)</option>
+    </select><br>
     <p>What the network thinks you're drawing</p>
     <div id="guess">
       <span class="confbar" id="confbar0">0</span>

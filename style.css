@@ -145,6 +145,17 @@ button#clearCanvas {
   font-weight: 800;
 }
 
+#modelSelect {
+  width: 264px;
+  height: 32px;
+  font-size: 14px;
+  font-weight: 800;
+  border: 1px solid black;
+  border-radius: 5px;
+  background: white;
+  margin: 2px;
+}
+
 button:focus {
   outline: 0;
 }

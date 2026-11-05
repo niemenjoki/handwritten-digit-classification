@@ -1,0 +1,11 @@
+{
+  "name": "handwritten-digit-classification-training",
+  "private": true,
+  "description": "Command line training scripts added in the 2026 update",
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "@tensorflow/tfjs-node": "4.22.0"
+  }
+}
